@@ -1,4 +1,7 @@
 ﻿## FlaUI 示例
+FlaUISample 简单打开notepad示例
+StartPtoService 运行/关闭多个程序(bat、exe、网站)
+
 
 ### FlaUI：UI 自动化库
 Github：https://github.com/FlaUI/FlaUI

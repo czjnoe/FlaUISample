@@ -2,6 +2,7 @@
 using FlaUI.Core.Tools;
 using FlaUI.UIA3;
 using System.Diagnostics;
+using System.Security.Policy;
 
 namespace StartPtoService
 {
@@ -12,6 +13,11 @@ namespace StartPtoService
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 启用所有程序
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnStart_Click(object sender, EventArgs e)
         {
             CloseAll();
@@ -55,11 +61,11 @@ namespace StartPtoService
                     Arguments = $"/k \"{peServerPath}\"",  // /k 会执行后保持窗口
                     WorkingDirectory = Path.GetDirectoryName(peServerPath),
                     UseShellExecute = true
-                }; 
+                };
                 Process.Start(psi);
             }
 
-            string textDriverSimulatorPath =@"C:\EFEM-Simulation\Debug\TextDriverSimulator.exe";
+            string textDriverSimulatorPath = @"C:\EFEM-Simulation\Debug\TextDriverSimulator.exe";
             var textDriverSimulatorApp = FlaUI.Core.Application.Launch(textDriverSimulatorPath);
             FlaUI.Core.AutomationElements.Window textDriverSimulatorWindow = null;
             using var automation = new UIA3Automation();
@@ -96,19 +102,53 @@ namespace StartPtoService
           )).Result;//等待 btnListen 控件出现
             sendBtn?.Click();
 
-            MessageBox.Show("启动成功");
 
             string chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
-            var chromeApp = FlaUI.Core.Application.Launch(chromePath, "http://localhost:5000");
+            StartChrome("http://localhost:5000");
             Thread.Sleep(2 * 1000);  // 等待几秒让页面加载
+            MessageBox.Show("启动成功");
         }
 
+        /// <summary>
+        /// 打开chrome 网站
+        /// </summary>
+        /// <param name="targetUrl"></param>
+        private void StartChrome(string targetUrl)
+        {
+            using var automation = new UIA3Automation();
+
+            string chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+            try
+            {
+                // 直接启动 Chrome 并打开网址
+                // Chrome 会自动处理已运行/未运行的情况
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = chromePath,
+                    Arguments = targetUrl,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"操作失败: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 关闭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnClose_Click(object sender, EventArgs e)
         {
             CloseAll();
             MessageBox.Show("关闭成功");
         }
 
+        /// <summary>
+        /// 关闭所有程序
+        /// </summary>
         private void CloseAll()
         {
             System.Diagnostics.Process[] procs = System.Diagnostics.Process.GetProcessesByName("dotnet", "."); // use "." for this machine
