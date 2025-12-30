@@ -8,3 +8,5 @@ Github：https://github.com/FlaUI/FlaUI
 ### FlaUInspect：一个基于 FlaUI 的 UI 自动化检查工具
 可以用来查看应用程序的 UI 元素树，属性和模式。
 Github：https://github.com/FlaUI/FlaUInspect
+
+<img width="1907" height="993" alt="image" src="https://github.com/user-attachments/assets/757689fa-75c4-4aa4-8c12-69ca6903411d" />
