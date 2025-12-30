@@ -17,7 +17,7 @@ namespace FlaUISample
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            // 1️⃣ 启动应用
+            // 启动应用，程序没有启动就启动它，已经启动就 Attach 到它
             string exePath = @"C:\Program Files\Notepad++\notepad++.exe";
             FlaUI.Core.Application app = null;
             while (app == null)
